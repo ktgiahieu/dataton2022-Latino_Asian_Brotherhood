@@ -1,5 +1,4 @@
-# Datatón 2022
-### Team Latino-Asian Brotherhood
+# Datatón 2022 - Team Latino-Asian Brotherhood
 
 This repo contains terminos_y_condiciones.pdf and the final submission code for reproducing the results.
 
