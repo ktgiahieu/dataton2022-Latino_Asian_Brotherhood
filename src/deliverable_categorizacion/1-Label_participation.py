@@ -82,7 +82,7 @@ if __name__ == "__main__":
     # Only use (news, client) pair that have client name in news, and (news23736, 800047031) is also a good pair
     matched_news = client_news_df[((client_news_df.name_in_body==True) | (client_news_df.name_in_title==True) | \
                                ((client_news_df.news_id == 'news23736') & (client_news_df.nit == 800047031))) & \
-                              (~client_news_df.trimmed_name.isin(get_rid_list))]
+                              (~client_news_df.trimmed_name.isin(bad_client_names))]
     
     # Only use news that have 1 client 
     matched_news = pd.merge(matched_news, matched_news.groupby('news_id').nit.count().to_frame().rename(columns={'nit':'count'}), on='news_id')
