@@ -6,7 +6,7 @@ This repo contains terminos_y_condiciones.pdf and the final submission code for 
 
 To setup the environment:
 * Install python >= 3.8
-* Install `requirements.txt` in the fresh python environment
+* Install `requirements.txt` in the fresh python environment (Here we use CUDA 11.2. If you use different CUDA version, please change torch version)
 
 ## Categoria: Main solution
 
