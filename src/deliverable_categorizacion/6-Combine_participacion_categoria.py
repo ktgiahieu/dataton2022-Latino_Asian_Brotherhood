@@ -27,8 +27,8 @@ def get_paricipacion(row):
             return 'No aplica'
 
 def get_categoria(row):
-    if np.max(row[category_columns].values)>CLASSIFICATION_THRESHOLD and row.pred_category != 'Descartable':
-        return row.pred_category
+    if np.max(row[category_columns].values)>CLASSIFICATION_THRESHOLD and row.pred_categoria != 'Descartable':
+        return row.pred_categoria
     else:
         if row.participacion != 'No aplica':
             return 'Otra'
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     pred_group = pred_group[['nit', 'news_id', 'pred_group'] + group_columns]
 
     category_columns = ['Macroeconomía', 'Sostenibilidad', 'Innovación', 'Regulaciones', 'Alianza', 'Reputación', 'Descartable']
-    pred_category = pred_category[['nit', 'news_id', 'preds', 'pred_category'] + category_columns]
+    pred_category = pred_category[['nit', 'news_id', 'preds', 'pred_categoria'] + category_columns]
 
     pred_df = client_news_df.merge(pred_group, on=['nit','news_id']).merge(pred_category, on=['nit','news_id'])
 
