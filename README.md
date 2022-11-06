@@ -33,14 +33,14 @@ SetFit first fine-tunes a Sentence Transformer model (`sentence-transformers/par
 #### Combine results
 ##### Pariticipacion
 A (client, news) pair is classified as:
-* *Cliente* if its name appeared in the news and have the same Sector
-* *Sector* if its name did not appear in the news but have the same Sector
-* *No aplica* otherwise\
+* *Cliente*: if its name appeared in the news and have the same Sector
+* *Sector*: if its name did not appear in the news but have the same Sector
+* *No aplica*: otherwise
 
 ##### Categoria
 A (client, news) pair is classified as:
-* *Otra* if they have the same Sector and the news is classified as **Descartable**
-* *Descartable* if they don't have the same Sector and the news is classified as **Descartable**
+* *Otra*: if they have the same Sector and the news is classified as "Descartable"
+* *Descartable*: if they don't have the same Sector and the news is classified as "Descartable"
 * The original category classified by the model: otherwise
 
 ## Recomendador: Main solution
