@@ -112,4 +112,4 @@ if __name__ == "__main__":
     pred_df['categoria'] = pred_df.apply(get_categoria,1)
 
     pred_df['nombre_equipo'] = 'Latino-Asian Brotherhood'
-    pred_df[['nombre_equipo', 'nit', 'news_id', 'participacion', 'categoria']].to_csv('../data/output/categorizacion.csv')
+    pred_df[['nombre_equipo', 'nit', 'news_id', 'participacion', 'categoria']].to_csv('../data/output/categorizacion.csv', index=False)
