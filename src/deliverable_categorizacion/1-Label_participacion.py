@@ -1,9 +1,8 @@
 import pandas as pd
 import regex
 
-# THIS FILE WILL CREATE (news, client) PAIR AS LABELS, USING REGEX
-# THESE LABELS WILL BE USED TO TRAIN A SentenceTransformers TO
-# CLASSIFY THE SECTOR OF THE NEWS
+# THIS FILE CREATE (news, client) PAIR AS LABELS, USING REGEX
+# THESE LABELS WILL BE USED TO TRAIN A SentenceTransformers TO CLASSIFY THE SECTOR OF THE NEWS
 
 def match_and_extract(row, *, text_col):
     """
@@ -37,7 +36,7 @@ bad_client_names = ['NIVEL',
             ]
 
 if __name__ == "__main__":
-    # ------ 1. Trim client names ---------
+    # ------ 1. TRIM CLIENTS' NAME ---------
     stopwords = pd.read_csv('../data/archivos_auxiliares/stopwords.txt', names=['stopword'], header=None)
     stopwords = stopwords['stopword']
     stopwords = stopwords.str.replace('.', r'\.', regex=False)
@@ -49,9 +48,9 @@ if __name__ == "__main__":
 
     clients.to_csv('../data/archivos_auxiliares/clean_names.csv', index=False)
 
-    # ------ 2. Find all matches of clients' name in news' titles and texts ---------
+    # ------ 2. FIND ALL MATCHES OF CLIENTS IN THE NEWS ---------
     regex_chars = ['.','(', ')']
-    client_df = pd.read_csv('../data/clientes.csv')
+    client_df = pd.read_csv('../data/archivos_auxiliares/clientes.csv')
 
     # regroup_desc_ciiu_division.csv is a manually created CSV file, 
     # which have bigger groups than desc_ciiu_division
