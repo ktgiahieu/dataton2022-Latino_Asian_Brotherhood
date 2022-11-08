@@ -4,6 +4,10 @@ import numpy as np
 import pandas as pd
 import os
 
+import nltk
+nltk.download('punkt')
+from nltk.tokenize import sent_tokenize, word_tokenize
+
 from datasets import load_dataset
 from sentence_transformers.losses import CosineSimilarityLoss
 from setfit import SetFitModel, SetFitTrainer
@@ -25,8 +29,19 @@ if __name__ == "__main__":
 
     client_news_df = client_news_df.merge(news_df, on='news_id')
     client_news_df['text'] = client_news_df.news_title + '. ' + client_news_df.news_text_content
-    # Crop only 10000 first characters of news
-    client_news_df['text'] = client_news_df['text'].apply(lambda x: x[:10000])
+    # Crop 10000 first characters of news, but reserve sentences
+    def crop_news(text):
+        if len(text)>10000:
+            sentences = sent_tokenize(text[9000:11000])
+            cum_sum_len = np.cumsum([len(x) for x in sentences])
+            if cum_sum_len[-1]>=1000:
+                sentence_idx_to_cut = np.where(cum_sum_len >= 1000)[0][0]
+                return text[:9000] + ' '.join(sentences[:sentence_idx_to_cut+1])
+            else:
+                return text
+        else:
+            return text
+    client_news_df['text'] = client_news_df['text'].apply(crop_news)
 
     # ------------ 2. INFER SETFIT MODEL --------------
     # Load SetFit model 
