@@ -45,4 +45,5 @@ A (client, news) pair is classified as:
 
 ##### Recomendador: 
 The recommendation score is given by two parts. The first one is the source reputation score, which is described in the previous paragraph. The other part is the confidence that the sector transformer has on the particular sector of the client. This means that if the transformer is very confident that a news article is about a certain sector, then this article should have a big priority for clients inside that sector.
+
 Recommendation Score = Confidence on client’s sector ∗ Source reputation score
