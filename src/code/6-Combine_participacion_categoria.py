@@ -113,7 +113,6 @@ if __name__ == "__main__":
     pred_df['categoria'] = pred_df.apply(get_categoria,1)
 
     pred_df['nombre_equipo'] = 'Latino-Asian Brotherhood'
-    pred_df[['nombre_equipo', 'nit', 'news_id', 'participacion', 'categoria']].to_csv('../data/output/categorizacion.csv', index=False)
 
     # ------ 5. CREATE recomendacion.csv ---------   
     # Load the source ranking file
@@ -129,9 +128,12 @@ if __name__ == "__main__":
     
     # The recomendacion_score is that confidence of the model above * source score
     pred_df['recomendacion_score'] = pred_df['group_proba'] * pred_df['score']
-    pred_df['recomendacion'] = pred_df.groupby('nit').recommender_score.rank(ascending=False)
+    pred_df['recomendacion'] = pred_df.groupby('nit').recomendacion_score.rank(ascending=False)
 
     pred_df = pred_df.sort_values(['nit','recomendacion'],ascending=True).groupby('nit').head(5)
 
-    pred_df[['nombre_equipo', 'nit', 'news_id', 'participacion', 'categoria', 'recomendacion']].to_csv('recomendacion.csv')
-
+    pred_df.rename(columns={'participacion':'participación', 
+                            'categoria': 'categoría',
+                            'recomendacion': 'recomendación'}, inplace=True)
+    pred_df[['nombre_equipo', 'nit', 'news_id', 'participación', 'categoría']].to_csv('../data/output/categorizacion.csv', index=False)
+    pred_df[['nombre_equipo', 'nit', 'news_id', 'participación', 'categoría', 'recomendación']].to_csv('../data/output/recomendacion.csv', index=False)
