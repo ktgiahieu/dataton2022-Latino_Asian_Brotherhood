@@ -92,7 +92,7 @@ if __name__ == "__main__":
     client_news_df['appearance_in_title'] = client_news_df['appearance_in_title'].map(str)
     client_news_df['appearance_in_body'] = client_news_df['appearance_in_body'].map(str)
 
-    client_news_df = client_news_df[['nit', 'news_id', 'nombre', 'desc_ciiu_division', 'group', 'trimmed_name', 'name_in_news']]
+    # client_news_df = client_news_df[['nit', 'news_id', 'nombre', 'desc_ciiu_division', 'group', 'trimmed_name', 'name_in_news']]
 
     # ------ 3. LOAD PREDICTIONS OF "paricipacion" AND "categoria" ---------
 
