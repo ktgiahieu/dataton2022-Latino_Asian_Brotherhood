@@ -129,7 +129,7 @@ if __name__ == "__main__":
     pred_df['recomendacion_score'] = pred_df['group_proba'] * pred_df['score']
     pred_df['recomendacion'] = pred_df.groupby('nit').recommender_score.rank(ascending=False)
 
-    pred_df = pred_df.sort_values(['nit','recomendacion'],ascending=True).group('nit').head(5)
+    pred_df = pred_df.sort_values(['nit','recomendacion'],ascending=True).groupby('nit').head(5)
 
     pred_df[['nombre_equipo', 'nit', 'news_id', 'participacion', 'categoria', 'recomendacion']].to_csv('recomendacion.csv')
 
