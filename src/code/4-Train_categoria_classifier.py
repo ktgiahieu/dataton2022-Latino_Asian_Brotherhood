@@ -32,12 +32,12 @@ if __name__ == "__main__":
         labels_map[l]=i
 
     df['label'] = df.label_text.replace(labels_map)
-    df.to_csv('../data/archivos_auxiliares/category_label_2nd_round_preprocessed.csv', index=False)
+    df.to_csv('../data/intermediate_output/category_label_2nd_round_preprocessed.csv', index=False)
 
     # ------------ 2. TRAIN SETFIT MODEL --------------
     
     # Load dataset
-    dataset = load_dataset("csv", data_files="../data/archivos_auxiliares/category_label_2nd_round_preprocessed.csv")
+    dataset = load_dataset("csv", data_files="../data/intermediate_output/category_label_2nd_round_preprocessed.csv")
     train_ds = dataset["train"]
 
     # Load SetFit model from Hub

@@ -116,7 +116,7 @@ if __name__ == "__main__":
 
     # ------ 5. CREATE recomendacion.csv ---------   
     # Load the source ranking file
-    sources_ranking = pd.read_csv('dataton2022-Latino_Asian_Brotherhood/src/data/archivos_auxiliares/sources_ranking.csv')
+    sources_ranking = pd.read_csv('../data/archivos_auxiliares/sources_ranking.csv')
     pred_df['news_url_header'] = pred_df.news_url_absolute.apply(lambda x:re.findall('(https?://.+?)/', x)[0])
     pred_df = pred_df.merge(sources_ranking, how='left', on='news_url_header')
     pred_df.score = pred_df.score.fillna(0.1)

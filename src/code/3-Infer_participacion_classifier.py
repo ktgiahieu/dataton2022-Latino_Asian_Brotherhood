@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
     # ------------ 2. INFER SETFIT MODEL --------------
     # Load SetFit model 
-    model = SetFitModel.from_pretrained('../data/archivos_auxiliares/trained_setfix_participacion')
+    model = SetFitModel.from_pretrained('../data/intermediate_output/trained_setfix_participacion')
 
     # Predict
     preds_proba = model.predict_proba(client_news_df.text.values)
@@ -59,5 +59,5 @@ if __name__ == "__main__":
         labels_map_inverse[i]=l
     client_news_df['pred_group'] = client_news_df['preds'].replace(labels_map_inverse)
 
-    client_news_df.to_csv('../data/output/pred_news_group.csv', index=False)
+    client_news_df.to_csv('../data/intermediate_output/pred_news_group.csv', index=False)
     

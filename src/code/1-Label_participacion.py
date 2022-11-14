@@ -172,4 +172,4 @@ if __name__ == "__main__":
 
     matched_news = pd.concat([matched_news, new_rows_sampled])
 
-    matched_news.to_csv('../data/archivos_auxiliares/matched_news_group.csv', index=False)
+    matched_news.to_csv('../data/intermediate_output/matched_news_group.csv', index=False)
