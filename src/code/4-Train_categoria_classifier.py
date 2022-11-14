@@ -20,24 +20,24 @@ set_seed(2022)
 
 if __name__ == "__main__":
     # ------------ 1. RANDOM SAMPLING 16 SAMPLES EACH GROUP --------------
-    df = pd.read_csv('../data/archivos_auxiliares/matched_news_group.csv')
-    df.rename(columns={'group':'label_text'}, inplace=True)
-    df['text'] = df['news_title'] + '. ' + df['news_text_content']
-    labels = df.label_text.unique()
 
+    df = pd.read_csv('../data/archivos_auxiliares/category_label_2nd_round.csv')
+    df.rename(columns={'category':'label_text'}, inplace=True)
+    news_df = pd.read_csv('../data/archivos_auxiliares/noticias.csv')
+    df = df.merge(news_df, on='news_id')
+    df['text' ] = df['news_title'] + '. ' + df['news_text_content']
+    labels = ['Macroeconomía','Sostenibilidad','Innovación','Regulaciones','Alianza','Reputación','Descartable']
     labels_map = {}
     for i, l in enumerate(labels):
         labels_map[l]=i
 
     df['label'] = df.label_text.replace(labels_map)
-
-    df = df.groupby('label_text').apply(lambda x: x.sample(16,replace=False) if x.news_id.count()>=16 else x).reset_index(drop=True)
-    df.to_csv('../data/archivos_auxiliares/matched_news_group_sampled.csv', index=False)
+    df.to_csv('../data/intermediate_output/category_label_2nd_round_preprocessed.csv', index=False)
 
     # ------------ 2. TRAIN SETFIT MODEL --------------
     
     # Load dataset
-    dataset = load_dataset("csv", data_files="../data/archivos_auxiliares/matched_news_group_sampled.csv")
+    dataset = load_dataset("csv", data_files="../data/intermediate_output/category_label_2nd_round_preprocessed.csv")
     train_ds = dataset["train"]
 
     # Load SetFit model from Hub
@@ -56,4 +56,7 @@ if __name__ == "__main__":
     trainer.train()
 
     # Save model
-    model.save_pretrained('../data/archivos_auxiliares/trained_setfix_participacion')
+    output_dir = '../data/intermediate_output'
+    if not os.path.isdir(output_dir):
+        os.makedirs(output_dir)
+    model.save_pretrained(f'{output_dir}/trained_setfix_categoria')

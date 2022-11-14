@@ -45,11 +45,11 @@ if __name__ == "__main__":
 
     # ------------ 2. INFER SETFIT MODEL --------------
     # Load SetFit model 
-    model = SetFitModel.from_pretrained('../data/archivos_auxiliares/trained_setfix_participacion')
+    model = SetFitModel.from_pretrained('../data/intermediate_output/trained_setfix_categoria')
 
     # Predict
     preds_proba = model.predict_proba(client_news_df.text.values)
-    labels = ['group_30', 'group_40', 'group_28', 'group_29', 'group_20', 'group_25', 'group_1', 'group_32', 'group_16', 'group_23', 'group_11', 'group_22', 'group_19', 'group_39', 'group_49', 'group_2', 'group_44', 'group_18', 'group_13', 'group_26', 'group_41', 'group_36', 'group_31', 'group_14', 'group_12', 'group_27', 'group_43', 'group_21', 'group_7', 'group_46', 'group_35', 'group_48', 'group_33', 'group_38', 'group_5', 'group_4', 'group_47', 'group_6', 'group_42']
+    labels = ['Macroeconomía','Sostenibilidad','Innovación','Regulaciones','Alianza','Reputación','Descartable']
     for i, l in enumerate(labels):
         client_news_df[l] = preds_proba[:,i]
     client_news_df['preds'] = np.argmax(preds_proba,1)
@@ -57,7 +57,10 @@ if __name__ == "__main__":
     labels_map_inverse = {}
     for i, l in enumerate(labels):
         labels_map_inverse[i]=l
-    client_news_df['pred_group'] = client_news_df['preds'].replace(labels_map_inverse)
+    client_news_df['pred_categoria'] = client_news_df['preds'].replace(labels_map_inverse)
 
-    client_news_df.to_csv('../data/output/pred_news_group.csv', index=False)
+    output_dir = '../data/intermediate_output'
+    if not os.path.isdir(output_dir):
+        os.makedirs(output_dir)
+    client_news_df.to_csv('../data/intermediate_output/pred_news_categoria.csv', index=False)
     

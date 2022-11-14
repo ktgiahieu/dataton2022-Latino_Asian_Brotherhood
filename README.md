@@ -8,13 +8,13 @@ To setup the environment:
 * Install python >= 3.8
 * Install `requirements.txt` in the fresh python environment (Here we use CUDA 11.2. If you use different CUDA version, please change torch version)
 
-## Categoria: Main solution
+## Main solution
 
 ### Training
-To train a **Categoria** classifier, run `src/recomendador/train_categoria.sh`
+To train a **Categoria** classifier, run `src/recomendador/train.sh`
 
 ### Inference
-To predict news category using **Categoria** classifier, run `src/recomendador/predict_categoria.sh`
+To predict news category using **Categoria** classifier, run `src/recomendador/predict.sh`
 
 ### TLDR
 #### Participacion
@@ -43,5 +43,6 @@ A (client, news) pair is classified as:
 * *Descartable*: if they don't have the same Sector and the news is classified as "Descartable"
 * The original category classified by the model: otherwise
 
-## Recomendador: Main solution
-(To be added)
+##### Recomendador: 
+The recommendation score is given by two parts. The first one is the source reputation score, which is described in the previous paragraph. The other part is the confidence that the sector transformer has on the particular sector of the client. This means that if the transformer is very confident that a news article is about a certain sector, then this article should have a big priority for clients inside that sector.
+Recommendation Score = Confidence on client’s sector ∗ Source reputation score
