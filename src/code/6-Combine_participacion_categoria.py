@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import os
 import regex
+import re
 
 from datasets import load_dataset
 from sentence_transformers.losses import CosineSimilarityLoss
