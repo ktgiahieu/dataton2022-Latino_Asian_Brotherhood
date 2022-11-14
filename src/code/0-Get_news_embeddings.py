@@ -3,14 +3,13 @@ import torch
 import numpy as np
 import pandas as pd
 import os
+import pickle
 
 import nltk
 nltk.download('punkt')
 from nltk.tokenize import sent_tokenize, word_tokenize
 
-from datasets import load_dataset
-from sentence_transformers.losses import CosineSimilarityLoss
-from setfit import SetFitModel, SetFitTrainer
+from sentence_transformers import SentenceTransformer
 
 def set_seed(seed=1234):
     random.seed(seed)
@@ -43,21 +42,16 @@ if __name__ == "__main__":
             return text
     client_news_df['text'] = client_news_df['text'].apply(crop_news)
 
-    # ------------ 2. INFER SETFIT MODEL --------------
-    # Load SetFit model 
-    model = SetFitModel.from_pretrained('../data/archivos_auxiliares/trained_setfix_categoria')
+    # ------------ 2. INFER SENTENCE TRANSFORMER MODEL --------------
+    # Load Sentence Transformers multilingual model 
+    model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
 
-    # Predict
-    preds_proba = model.predict_proba(client_news_df.text.values)
-    labels = ['Macroeconomía','Sostenibilidad','Innovación','Regulaciones','Alianza','Reputación','Descartable']
-    for i, l in enumerate(labels):
-        client_news_df[l] = preds_proba[:,i]
-    client_news_df['preds'] = np.argmax(preds_proba,1)
+    # Get embeddings
+    news_embeddings = model.encode(client_news_df.text.values)
 
-    labels_map_inverse = {}
-    for i, l in enumerate(labels):
-        labels_map_inverse[i]=l
-    client_news_df['pred_categoria'] = client_news_df['preds'].replace(labels_map_inverse)
-
-    client_news_df.to_csv('../data/output/pred_news_categoria.csv', index=False)
+    output_dir = '../data/intermediate_output'
+    if not os.path.isdir(output_dir):
+        os.makedirs(output_dir)
+    with open('../data/intermediate_output/news_embeddings.pkl', 'wb') as handle:
+        pickle.dump(news_embeddings, handle, protocol=pickle.HIGHEST_PROTOCOL)
     

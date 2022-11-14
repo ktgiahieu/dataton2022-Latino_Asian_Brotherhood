@@ -4,12 +4,16 @@ import numpy as np
 import pandas as pd
 import os
 import regex
+import pickle
 
-from datasets import load_dataset
-from sentence_transformers.losses import CosineSimilarityLoss
-from setfit import SetFitModel, SetFitTrainer
+from sentence_transformers import SentenceTransformer
+from scipy import spatial
 
-CLASSIFICATION_THRESHOLD = 0.7
+CATEGORIA_CLASSIFICATION_THRESHOLD = 0.7
+
+def get_cosine_similarity(vector1, vector2):
+    sim = 1 - spatial.distance.cosine(vector1, vector2)
+    return sim
 
 def match_and_extract(row, *, text_col):
     pattern = r'\b(?<=(.{0,100}))('+'(.{0,20})'.join(row['trimmed_name'].split())+r')\b(?=(.{0,100}))'
@@ -27,7 +31,7 @@ def get_paricipacion(row):
             return 'No aplica'
 
 def get_categoria(row):
-    if np.max(row[category_columns].values)>CLASSIFICATION_THRESHOLD and row.pred_categoria != 'Descartable':
+    if np.max(row[category_columns].values)>CATEGORIA_CLASSIFICATION_THRESHOLD and row.pred_categoria != 'Descartable':
         return row.pred_categoria
     else:
         if row.participacion != 'No aplica':
@@ -92,15 +96,22 @@ if __name__ == "__main__":
     client_news_df['appearance_in_title'] = client_news_df['appearance_in_title'].map(str)
     client_news_df['appearance_in_body'] = client_news_df['appearance_in_body'].map(str)
 
-    client_news_df = client_news_df[['nit', 'news_id', 'nombre', 'desc_ciiu_division', 'group', 'trimmed_name', 'name_in_news']]
+    client_news_df = client_news_df[['nit', 'news_id', 'nombre', 'desc_ciiu_division', 'trimmed_name', 'name_in_news']]
 
     # ------ 3. LOAD PREDICTIONS OF "paricipacion" AND "categoria" ---------
+    pred_category = pd.read_csv('../data/intermediate_output/pred_news_categoria.csv')
+    with open('../data/intermediate_output/news_embeddings.pkl', 'rb') as handle:
+        news_embeddings = pickle.load(handle)
 
-    pred_group = pd.read_csv('../data/output/pred_news_group.csv')
-    pred_category = pd.read_csv('../data/output/pred_news_categoria.csv')
 
-    group_columns = ['group_30', 'group_40', 'group_28', 'group_29', 'group_20', 'group_25', 'group_1', 'group_32', 'group_16', 'group_23', 'group_11', 'group_22', 'group_19', 'group_39', 'group_49', 'group_2', 'group_44', 'group_18', 'group_13', 'group_26', 'group_41', 'group_36', 'group_31', 'group_14', 'group_12', 'group_27', 'group_43', 'group_21', 'group_7', 'group_46', 'group_35', 'group_48', 'group_33', 'group_38', 'group_5', 'group_4', 'group_47', 'group_6', 'group_42']
-    pred_group = pred_group[['nit', 'news_id', 'pred_group'] + group_columns]
+
+
+
+
+
+    division_similarity = [get_cosine_similarity(x) for x in news_embeddings]
+
+    client_news_df['division_similarity'] = client_news_df
 
     category_columns = ['Macroeconomía', 'Sostenibilidad', 'Innovación', 'Regulaciones', 'Alianza', 'Reputación', 'Descartable']
     pred_category = pred_category[['nit', 'news_id', 'preds', 'pred_categoria'] + category_columns]

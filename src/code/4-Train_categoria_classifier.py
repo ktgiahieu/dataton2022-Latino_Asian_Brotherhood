@@ -56,4 +56,7 @@ if __name__ == "__main__":
     trainer.train()
 
     # Save model
-    model.save_pretrained('../data/archivos_auxiliares/trained_setfix_categoria')
+    output_dir = '../data/intermediate_output'
+    if not os.path.isdir(output_dir):
+        os.makedirs(output_dir)
+    model.save_pretrained(f'{output_dir}/trained_setfix_categoria')
