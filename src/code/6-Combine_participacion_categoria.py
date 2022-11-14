@@ -121,6 +121,8 @@ if __name__ == "__main__":
     pred_df['news_url_header'] = pred_df.news_url_absolute.apply(lambda x:re.findall('(https?://.+?)/', x)[0])
     pred_df = pred_df.merge(sources_ranking, how='left', on='news_url_header')
     pred_df.score = pred_df.score.fillna(0.1)
+    # Because there was no group_3 in training data
+    pred_df['group_3'] = 0
 
     # Get the score of the model as group_proba
     pred_df['group_proba'] = pred_df.apply(lambda row: row[row['group']], 1)
