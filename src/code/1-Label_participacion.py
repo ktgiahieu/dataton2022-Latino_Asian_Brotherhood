@@ -158,6 +158,7 @@ if __name__ == "__main__":
 
     # For group < 200 samples, add news that related to CIIU description
     to_be_added_group_dict = (matched_news.group.value_counts() < 200).to_dict()
+    to_be_added_group_dict['group_3'] = True
     matched_news['to_be_added_group'] = matched_news.group.replace(to_be_added_group_dict)
     
     new_rows = []
