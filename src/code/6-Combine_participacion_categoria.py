@@ -128,7 +128,7 @@ if __name__ == "__main__":
     
     # The recomendacion_score is that confidence of the model above * source score
     pred_df['recomendacion_score'] = pred_df['group_proba'] * pred_df['score']
-    pred_df['recomendacion'] = pred_df.groupby('nit').recomendacion_score.rank(ascending=False)
+    pred_df['recomendacion'] = pred_df.groupby('nit').recomendacion_score.rank(ascending=False, method='first')
 
     pred_df = pred_df.sort_values(['nit','recomendacion'],ascending=True).groupby('nit').head(5)
 
