@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     df['label'] = df.label_text.replace(labels_map)
 
-    df = df.groupby('label_text').apply(lambda x: x.sample(16,replace=False, random_state=2022) if x.news_id.count()>=16 else x).reset_index(drop=True)
+    df = df.groupby('label_text').apply(lambda x: x.sample(2,replace=False, random_state=2022) if x.news_id.count()>=2 else x).reset_index(drop=True)
     df.to_csv('../data/intermediate_output/matched_news_group_sampled.csv', index=False)
 
     # ------------ 2. TRAIN SETFIT MODEL --------------
