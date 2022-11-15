@@ -40,9 +40,7 @@ if __name__ == "__main__":
                 return text
         else:
             return text
-    # client_news_df['text'] = client_news_df['text'].apply(crop_news)
-    client_news_df['text'] = client_news_df['text'].apply(lambda x: x[:100])
-
+    client_news_df['text'] = client_news_df['text'].apply(crop_news)
 
     # ------------ 2. INFER SENTENCE TRANSFORMER MODEL --------------
     # Load Sentence Transformers multilingual model 

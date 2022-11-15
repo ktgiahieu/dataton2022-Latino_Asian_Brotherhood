@@ -32,8 +32,6 @@ if __name__ == "__main__":
         labels_map[l]=i
 
     df['label'] = df.label_text.replace(labels_map)
-    df = df.groupby('label_text').apply(lambda x: x.sample(2,replace=False, random_state=2022) if x.news_id.count()>=2 else x).reset_index(drop=True)
-
     df.to_csv('../data/intermediate_output/category_label_2nd_round_preprocessed.csv', index=False)
 
     # ------------ 2. TRAIN SETFIT MODEL --------------
