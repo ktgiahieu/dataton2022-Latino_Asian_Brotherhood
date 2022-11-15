@@ -168,7 +168,7 @@ if __name__ == "__main__":
                 new_rows.append(new_row)
 
     new_rows = pd.DataFrame(new_rows)
-    new_rows_sampled = new_rows.groupby('group').apply(lambda x: x.sample(n=min(100,len(x)))).reset_index(drop=True)
+    new_rows_sampled = new_rows.groupby('group').apply(lambda x: x.sample(n=min(100,len(x)), random_state=2022)).reset_index(drop=True)
 
     matched_news = pd.concat([matched_news, new_rows_sampled])
 
