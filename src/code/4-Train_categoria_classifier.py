@@ -50,7 +50,8 @@ if __name__ == "__main__":
         loss_class=CosineSimilarityLoss,
         batch_size=8,
         num_iterations=20, # Number of text pairs to generate for contrastive learning
-        num_epochs=1 # Number of epochs to use for contrastive learning
+        num_epochs=1, # Number of epochs to use for contrastive learning
+        seed=2022
     )
     # Train
     trainer.train()

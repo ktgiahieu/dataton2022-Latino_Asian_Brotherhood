@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     df['label'] = df.label_text.replace(labels_map)
 
-    df = df.groupby('label_text').apply(lambda x: x.sample(16,replace=False) if x.news_id.count()>=16 else x).reset_index(drop=True)
+    df = df.groupby('label_text').apply(lambda x: x.sample(16,replace=False, random_state=2022) if x.news_id.count()>=16 else x).reset_index(drop=True)
     df.to_csv('../data/intermediate_output/matched_news_group_sampled.csv', index=False)
 
     # ------------ 2. TRAIN SETFIT MODEL --------------
@@ -50,7 +50,8 @@ if __name__ == "__main__":
         loss_class=CosineSimilarityLoss,
         batch_size=8,
         num_iterations=20, # Number of text pairs to generate for contrastive learning
-        num_epochs=1 # Number of epochs to use for contrastive learning
+        num_epochs=1, # Number of epochs to use for contrastive learning
+        seed=2022
     )
     # Train
     trainer.train()
